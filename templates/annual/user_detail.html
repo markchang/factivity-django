@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>Factivity User Detail</title>
+<style type="text/css">
+body {
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 12px;
+color: #000000;
+}
+
+#greytext {
+color: gray;
+}
+
+</style>
+</head>
+
+<body>
+
+{% if logged_in %}
+<div align="right"><a href="{% url Factivity.annual.views.logout_view %}">logout</a></div>
+
+<form action="/factivity/add/" method="post">
+<select name="category">
+{% for category in categories %}
+    <option value="{{category.id}}">{{category.short_description}}</option>
+{% endfor %}
+</select><br />
+<input type="text" size="80" maxlength="512" name="description" /> activity description<br />
+<input type="submit" value="New Activity"/>
+</form>
+
+{% else %}
+<div align="right"><a href="{% url Factivity.annual.views.login_view %}?next={{request.path}}">login</a></div>
+{% endif %}
+
+{% if recent_activity %}
+Activity for {{username}}:<br />
+Go to the <a href="{% url Factivity.annual.views.index %}">main index</a><br />
+
+{% regroup recent_activity by category as category_list %}
+
+<ul>
+{% for category in category_list  %}
+    <li>{{ category.grouper }}
+    <ul>
+        {% for activity in category.list %}
+        <li>
+        {% if owner %}
+        <a href="{% url Factivity.annual.views.delete activity.id %}">x</a>
+        {% endif %}
+        {{ activity.description }}<br />
+        <div id="greytext">
+        {{ activity.date|date:"M d Y"}}
+        </div>
+        </li>
+        {% endfor %}
+    </ul>
+    </li>
+{% endfor %}
+</ul>
+
+{% else %}
+    <p>No activity for {{username}}.</p>
+    <p>Go to the <a href="{% url Factivity.annual.views.index %}">main index</a></p>
+{% endif %}
+
+</body>
+</html>

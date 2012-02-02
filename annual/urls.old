@@ -1,0 +1,9 @@
+from django.conf.urls.defaults import *
+
+urlpatterns = patterns('Factivity.annual.views',
+    (r'^$', 'index'),
+    (r'^logout/$', 'logout_view'),
+    (r'^add/$', 'add'),
+    (r'^delete/(?P<activity_id>\d+)/$', 'delete'),
+    (r'^(?P<username>\w+)/$', 'user')
+)

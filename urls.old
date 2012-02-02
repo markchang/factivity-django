@@ -1,0 +1,20 @@
+from django.conf.urls.defaults import *
+
+# Uncomment the next two lines to enable the admin:
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+    (r'^factivity/login/$', 'django.contrib.auth.views.login', {'template_name': 'annual/login.html'}),
+    (r'^factivity/admin/', include(admin.site.urls)),
+    (r'^factivity/', include('Factivity.annual.urls')),
+)
+from django.conf.urls.defaults import *
+
+urlpatterns = patterns('Factivity.annual.views',
+    (r'^$', 'index'),
+    (r'^logout/$', 'logout_view'),
+    (r'^add/$', 'add'),
+    (r'^delete/(?P<activity_id>\d+)/$', 'delete'),
+    (r'^(?P<username>\w+)/$', 'user')
+)
